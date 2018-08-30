@@ -16,6 +16,7 @@ class Movies extends Component {
     this.setState({ movies });
   }
   handleDelete = movie => {
+    const { currentPage: page, itemsCountPerPage } = this.state;
     const movies = [...this.state.movies];
     const index = movies.indexOf(movie);
 
@@ -23,9 +24,8 @@ class Movies extends Component {
       movies.splice(index, 1);
     }
 
-    const pageIndex = Math.ceil(movies.length / this.state.itemsCountPerPage);
-    const currentPage =
-      this.state.currentPage < pageIndex ? this.state.currentPage : pageIndex;
+    const pageIndex = Math.ceil(movies.length / itemsCountPerPage);
+    const currentPage = page < pageIndex ? page : pageIndex;
     this.setState({
       movies,
       currentPage
@@ -42,7 +42,6 @@ class Movies extends Component {
   };
 
   handlePageChange = page => {
-    console.log(page);
     this.setState({ currentPage: page });
   };
   render() {
