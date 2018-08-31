@@ -4,7 +4,7 @@ import Like from "./common/like";
 import Pagination from "./common/pagination";
 import { paginate } from "./util/pagination";
 import TableHeader from "./common/table-header";
-
+import _ from "lodash";
 const columns = [
   { path: "title", label: "Title" },
   { path: "genre.name", label: "Genre" },
@@ -18,6 +18,7 @@ class Movies extends Component {
     movies: [],
     filteredMovies: [],
     itemsCountPerPage: 4,
+    sortColumn: "",
     currentPage: 1
   };
 
@@ -54,6 +55,12 @@ class Movies extends Component {
   handlePageChange = page => {
     this.setState({ currentPage: page });
   };
+
+  handleSort = column => {
+    this.setState({
+      sortColumn: column.path
+    });
+  };
   render() {
     const { movies: allMovies, itemsCountPerPage, currentPage } = this.state;
     const movies = paginate(allMovies, currentPage, itemsCountPerPage);
@@ -68,7 +75,7 @@ class Movies extends Component {
               Math.ceil(allMovies.length / itemsCountPerPage)}
           </p>
           <table className="table">
-            <TableHeader columns={columns} />
+            <TableHeader columns={columns} onClick={this.handleSort} />
             <tbody>
               {movies.map(m => {
                 return (
