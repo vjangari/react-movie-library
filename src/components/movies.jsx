@@ -18,7 +18,7 @@ class Movies extends Component {
     movies: [],
     filteredMovies: [],
     itemsCountPerPage: 4,
-    sortColumn: "",
+    sortColumn: { path: "title", order: "asc" },
     currentPage: 1
   };
 
@@ -56,14 +56,29 @@ class Movies extends Component {
     this.setState({ currentPage: page });
   };
 
-  handleSort = column => {
+  handleSort = path => {
+    const sortColumn = { ...this.state.sortColumn };
+
+    if (sortColumn.path === path) {
+      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+    } else {
+      sortColumn.path = path;
+      sortColumn.order = "asc";
+    }
+
     this.setState({
-      sortColumn: column.path
+      sortColumn
     });
   };
   render() {
-    const { movies: allMovies, itemsCountPerPage, currentPage } = this.state;
-    const movies = paginate(allMovies, currentPage, itemsCountPerPage);
+    const {
+      movies: allMovies,
+      itemsCountPerPage,
+      currentPage,
+      sortColumn
+    } = this.state;
+    const sorted = _.orderBy(allMovies, [sortColumn.path], [sortColumn.order]);
+    const movies = paginate(sorted, currentPage, itemsCountPerPage);
     return (
       <div className="row">
         <div className="col-2" />

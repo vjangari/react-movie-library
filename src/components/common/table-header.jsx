@@ -8,7 +8,7 @@ const TableHeader = ({ columns, onClick }) => {
           <th
             key={column.path || column.key}
             scope="col"
-            onClick={() => column.path && onClick(column)}
+            onClick={() => column.path && onClick(column.path)}
           >
             {column.label}
           </th>
