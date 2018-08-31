@@ -3,7 +3,16 @@ import { getMovies } from "../services/fakeMovieService";
 import Like from "./common/like";
 import Pagination from "./common/pagination";
 import { paginate } from "./util/pagination";
+import TableHeader from "./common/table-header";
 
+const columns = [
+  { path: "title", label: "Title" },
+  { path: "genre.name", label: "Genre" },
+  { path: "numberInStock", label: "Stock" },
+  { path: "dailyRentalRate", label: "Rate" },
+  { key: "like" },
+  { key: "delete" }
+];
 class Movies extends Component {
   state = {
     movies: [],
@@ -11,6 +20,7 @@ class Movies extends Component {
     itemsCountPerPage: 4,
     currentPage: 1
   };
+
   componentDidMount() {
     const movies = getMovies().sort((a, b) => a.title > b.title);
     this.setState({ movies });
@@ -58,16 +68,7 @@ class Movies extends Component {
               Math.ceil(allMovies.length / itemsCountPerPage)}
           </p>
           <table className="table">
-            <thead>
-              <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Genre</th>
-                <th scope="col">Stock</th>
-                <th scope="col">Daily Rental</th>
-                <th scope="col" />
-                <th scope="col" />
-              </tr>
-            </thead>
+            <TableHeader columns={columns} />
             <tbody>
               {movies.map(m => {
                 return (
