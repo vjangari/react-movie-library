@@ -114,29 +114,6 @@ class Movies extends Component {
               sortColumn={sortColumn}
             />
             <TableBody columns={this.columns} data={movies} />
-            {/* <tbody>
-              {movies.map(m => {
-                return (
-                  <tr key={m._id}>
-                    <td> {m.title}</td>
-                    <td> {m.genre.name}</td>
-                    <td> {m.numberInStock}</td>
-                    <td> {m.dailyRentalRate}</td>
-                    <td>
-                      <Like liked={m.liked} onLike={() => this.handleLike(m)} />
-                    </td>
-                    <td>
-                      <button
-                        className="btn btn-sm btn-danger"
-                        onClick={() => this.handleDelete(m)}
-                      >
-                        <i className="fa fa-trash" aria-hidden="true" />
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody> */}
           </table>
           <Pagination
             itemsCount={allMovies.length}

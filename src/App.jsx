@@ -5,7 +5,9 @@ class App extends Component {
   render() {
     return (
       <main role="main" className="app container">
-        <Movies />
+        <React.StrictMode>
+          <Movies />
+        </React.StrictMode>
       </main>
     );
   }
