@@ -90,7 +90,11 @@ class Movies extends Component {
               Math.ceil(allMovies.length / itemsCountPerPage)}
           </p>
           <table className="table">
-            <TableHeader columns={columns} onClick={this.handleSort} />
+            <TableHeader
+              columns={columns}
+              onSort={this.handleSort}
+              sortColumn={sortColumn}
+            />
             <tbody>
               {movies.map(m => {
                 return (
