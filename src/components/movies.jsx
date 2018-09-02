@@ -1,19 +1,37 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
-import Like from "./common/like";
 import Pagination from "./common/pagination";
 import { paginate } from "./util/pagination";
 import TableHeader from "./common/table-header";
+import Like from "./common/like";
 import _ from "lodash";
-const columns = [
-  { path: "title", label: "Title" },
-  { path: "genre.name", label: "Genre" },
-  { path: "numberInStock", label: "Stock" },
-  { path: "dailyRentalRate", label: "Rate" },
-  { key: "like" },
-  { key: "delete" }
-];
+import TableBody from "./common/table-body";
+
 class Movies extends Component {
+  columns = [
+    { path: "title", label: "Title" },
+    { path: "genre.name", label: "Genre" },
+    { path: "numberInStock", label: "Stock" },
+    { path: "dailyRentalRate", label: "Rate" },
+    {
+      key: "like",
+      content: movie => (
+        <Like liked={movie.liked} onLike={() => this.handleLike(movie)} />
+      )
+    },
+    {
+      key: "delete",
+      content: movie => (
+        <button
+          className="btn btn-sm btn-danger"
+          onClick={() => this.handleDelete(movie)}
+        >
+          <i className="fa fa-trash" aria-hidden="true" />
+        </button>
+      )
+    }
+  ];
+
   state = {
     movies: [],
     filteredMovies: [],
@@ -91,11 +109,12 @@ class Movies extends Component {
           </p>
           <table className="table">
             <TableHeader
-              columns={columns}
+              columns={this.columns}
               onSort={this.handleSort}
               sortColumn={sortColumn}
             />
-            <tbody>
+            <TableBody columns={this.columns} data={movies} />
+            {/* <tbody>
               {movies.map(m => {
                 return (
                   <tr key={m._id}>
@@ -117,7 +136,7 @@ class Movies extends Component {
                   </tr>
                 );
               })}
-            </tbody>
+            </tbody> */}
           </table>
           <Pagination
             itemsCount={allMovies.length}
