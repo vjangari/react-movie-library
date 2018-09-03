@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import Pagination from "./common/pagination";
 import { paginate } from "./util/pagination";
-import TableHeader from "./common/table-header";
 import Like from "./common/like";
 import _ from "lodash";
-import TableBody from "./common/table-body";
+import Table from "./common/table";
 
 class Movies extends Component {
   columns = [
@@ -74,21 +73,13 @@ class Movies extends Component {
     this.setState({ currentPage: page });
   };
 
-  handleSort = path => {
-    const sortColumn = { ...this.state.sortColumn };
-
-    if (sortColumn.path === path) {
-      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    } else {
-      sortColumn.path = path;
-      sortColumn.order = "asc";
-    }
-
+  handleSort = sortColumn => {
     this.setState({
       sortColumn
     });
   };
-  render() {
+
+  getPagedDate() {
     const {
       movies: allMovies,
       itemsCountPerPage,
@@ -97,6 +88,17 @@ class Movies extends Component {
     } = this.state;
     const sorted = _.orderBy(allMovies, [sortColumn.path], [sortColumn.order]);
     const movies = paginate(sorted, currentPage, itemsCountPerPage);
+    const totalCount = allMovies.length;
+    return { movies, sortColumn, currentPage, itemsCountPerPage, totalCount };
+  }
+  render() {
+    const {
+      movies,
+      sortColumn,
+      currentPage,
+      itemsCountPerPage,
+      totalCount
+    } = this.getPagedDate();
     return (
       <div className="row">
         <div className="col-2" />
@@ -105,18 +107,17 @@ class Movies extends Component {
             {"Showing page " +
               currentPage +
               " of " +
-              Math.ceil(allMovies.length / itemsCountPerPage)}
+              Math.ceil(totalCount / itemsCountPerPage)}
           </p>
-          <table className="table">
-            <TableHeader
-              columns={this.columns}
-              onSort={this.handleSort}
-              sortColumn={sortColumn}
-            />
-            <TableBody columns={this.columns} data={movies} />
-          </table>
+          <Table
+            columns={this.columns}
+            sortColumn={sortColumn}
+            onSort={this.handleSort}
+            data={movies}
+          />
+
           <Pagination
-            itemsCount={allMovies.length}
+            itemsCount={totalCount}
             itemsCountPerPage={itemsCountPerPage}
             currentPage={currentPage}
             onPageChange={this.handlePageChange}

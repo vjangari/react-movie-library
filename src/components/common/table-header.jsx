@@ -10,6 +10,18 @@ class TableHeader extends Component {
     }
     return null;
   }
+
+  raiseSort = path => {
+    const sortColumn = { ...this.props.sortColumn };
+
+    if (sortColumn.path === path) {
+      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+    } else {
+      sortColumn.path = path;
+      sortColumn.order = "asc";
+    }
+    this.props.onSort(sortColumn);
+  };
   render() {
     const { columns, onSort } = this.props;
     return (
@@ -20,7 +32,7 @@ class TableHeader extends Component {
               key={column.path || column.key}
               scope="col"
               className={column.path && "showCursor"}
-              onClick={() => column.path && onSort(column.path)}
+              onClick={() => column.path && this.raiseSort(column.path)}
             >
               {column.label}
 
