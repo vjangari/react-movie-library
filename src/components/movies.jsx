@@ -114,6 +114,7 @@ class Movies extends Component {
 
   getPagedText(pageCount, currentPage) {
     if (pageCount) return "Showing page " + currentPage + " of " + pageCount;
+    else return "No records found";
   }
   render() {
     const { genres, selectedGenre } = this.state;
