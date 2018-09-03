@@ -23,7 +23,7 @@ class TableHeader extends Component {
     this.props.onSort(sortColumn);
   };
   render() {
-    const { columns, onSort } = this.props;
+    const { columns } = this.props;
     return (
       <thead>
         <tr>
@@ -31,7 +31,7 @@ class TableHeader extends Component {
             <th
               key={column.path || column.key}
               scope="col"
-              className={column.path && "showCursor"}
+              className={column.path && "clickable"}
               onClick={() => column.path && this.raiseSort(column.path)}
             >
               {column.label}

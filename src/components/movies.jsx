@@ -5,6 +5,8 @@ import Table from "./common/table";
 import { getMovies } from "../services/fakeMovieService";
 import { paginate } from "./util/pagination";
 import _ from "lodash";
+import { getGenres } from "./../services/fakeGenreService";
+import ListGroup from "./common/list-group";
 
 class Movies extends Component {
   columns = [
@@ -33,7 +35,9 @@ class Movies extends Component {
 
   state = {
     movies: [],
+    genres: [],
     filteredMovies: [],
+    selectedGenre: "",
     itemsCountPerPage: 4,
     sortColumn: { path: "title", order: "asc" },
     currentPage: 1
@@ -41,7 +45,9 @@ class Movies extends Component {
 
   componentDidMount() {
     const movies = getMovies().sort((a, b) => a.title > b.title);
-    this.setState({ movies });
+    const genres = getGenres().sort((a, b) => a.name > b.name);
+    genres.unshift({ _id: "", name: "All Genres" });
+    this.setState({ movies, genres });
   }
   handleDelete = movie => {
     const { currentPage: page, itemsCountPerPage } = this.state;
@@ -78,36 +84,57 @@ class Movies extends Component {
       sortColumn
     });
   };
-
+  handleFilter = item => {
+    const selectedGenre = item._id;
+    this.setState({ selectedGenre, currentPage: 1 });
+  };
   getPagedDate() {
     const {
       movies: allMovies,
       itemsCountPerPage,
       currentPage,
-      sortColumn
+      sortColumn,
+      selectedGenre
     } = this.state;
-    const sorted = _.orderBy(allMovies, [sortColumn.path], [sortColumn.order]);
+    let filterd = allMovies;
+    if (selectedGenre) {
+      filterd = _.filter(allMovies, movie => movie.genre._id === selectedGenre);
+    }
+    const sorted = _.orderBy(filterd, [sortColumn.path], [sortColumn.order]);
     const movies = paginate(sorted, currentPage, itemsCountPerPage);
-    return { data: movies, sortColumn, currentPage, itemsCountPerPage, totalCount:allMovies.length };
+    return {
+      data: movies,
+      sortColumn,
+      currentPage,
+      itemsCountPerPage,
+      totalCount: filterd.length,
+      pageCount: Math.ceil(filterd.length / itemsCountPerPage)
+    };
+  }
+
+  getPagedText(pageCount, currentPage) {
+    if (pageCount) return "Showing page " + currentPage + " of " + pageCount;
   }
   render() {
+    const { genres, selectedGenre } = this.state;
     const {
       data,
       sortColumn,
       currentPage,
       itemsCountPerPage,
-      totalCount
+      totalCount,
+      pageCount
     } = this.getPagedDate();
     return (
       <div className="row">
         <div className="col-2" />
+        <ListGroup
+          items={genres}
+          selectedItem={selectedGenre}
+          onFilter={this.handleFilter}
+        />
         <div className="col">
-          <p>
-            {"Showing page " +
-              currentPage +
-              " of " +
-              Math.ceil(totalCount / itemsCountPerPage)}
-          </p>
+          <p>{this.getPagedText(pageCount, currentPage)}</p>
           <Table
             columns={this.columns}
             sortColumn={sortColumn}
