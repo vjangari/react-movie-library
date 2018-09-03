@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { getMovies } from "../services/fakeMovieService";
-import Pagination from "./common/pagination";
-import { paginate } from "./util/pagination";
 import Like from "./common/like";
-import _ from "lodash";
+import Pagination from "./common/pagination";
 import Table from "./common/table";
+import { getMovies } from "../services/fakeMovieService";
+import { paginate } from "./util/pagination";
+import _ from "lodash";
 
 class Movies extends Component {
   columns = [
@@ -88,12 +88,11 @@ class Movies extends Component {
     } = this.state;
     const sorted = _.orderBy(allMovies, [sortColumn.path], [sortColumn.order]);
     const movies = paginate(sorted, currentPage, itemsCountPerPage);
-    const totalCount = allMovies.length;
-    return { movies, sortColumn, currentPage, itemsCountPerPage, totalCount };
+    return { data: movies, sortColumn, currentPage, itemsCountPerPage, totalCount:allMovies.length };
   }
   render() {
     const {
-      movies,
+      data,
       sortColumn,
       currentPage,
       itemsCountPerPage,
@@ -113,7 +112,8 @@ class Movies extends Component {
             columns={this.columns}
             sortColumn={sortColumn}
             onSort={this.handleSort}
-            data={movies}
+            data={data}
+            // styleClass="table table-hover table-striped"
           />
 
           <Pagination
