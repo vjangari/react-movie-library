@@ -128,12 +128,13 @@ class Movies extends Component {
     } = this.getPagedDate();
     return (
       <div className="row">
-        <div className="col-2" />
-        <ListGroup
-          items={genres}
-          selectedItem={selectedGenre}
-          onFilter={this.handleFilter}
-        />
+        <div className="col-2">
+          <ListGroup
+            items={genres}
+            selectedItem={selectedGenre}
+            onFilter={this.handleFilter}
+          />
+        </div>
         <div className="col">
           <p>{this.getPagedText(pageCount, currentPage)}</p>
           <Table

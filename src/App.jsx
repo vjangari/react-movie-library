@@ -1,14 +1,24 @@
 import React, { Component } from "react";
 import "./App.css";
 import Movies from "./components/movies";
+import Navbar from "./components/common/navbar";
 class App extends Component {
+  navItems = [
+    { title: "Movies", path: "/movies" },
+    { title: "Customers", path: "/customers" },
+    { title: "Rentals", path: "/rentals" }
+  ];
   render() {
     return (
-      <main role="main" className="app container">
-        <React.StrictMode>
+      <React.Fragment>
+        <header>
+          <Navbar items={this.navItems} />
+        </header>
+
+        <main role="main" class="container mt-2">
           <Movies />
-        </React.StrictMode>
-      </main>
+        </main>
+      </React.Fragment>
     );
   }
 }
