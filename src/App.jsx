@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import Movies from "./components/movies";
 import Navbar from "./components/common/navbar";
-import { Route } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import Customers from "./components/customers";
 import Rentals from "./components/rentals";
 class App extends Component {
@@ -19,10 +19,12 @@ class App extends Component {
         </header>
 
         <main role="main" className="container mt-2">
-          <Route path="/movies" component={Movies} />
-          <Route path="/customers" component={Customers} />
-          <Route path="/rentals" component={Rentals} />
-          <Route path="/" exact component={Movies} />
+          <Switch>
+            <Route path="/movies" component={Movies} />
+            <Route path="/customers" component={Customers} />
+            <Route path="/rentals" component={Rentals} />
+            <Route path="/" exact component={Movies} />
+          </Switch>
         </main>
       </React.Fragment>
     );
