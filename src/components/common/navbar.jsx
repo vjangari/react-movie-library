@@ -1,20 +1,20 @@
 import React from "react";
-
+import { NavLink, Link } from "react-router-dom";
 const Navbar = ({ items }) => {
   return (
     <header>
       <nav className="navbar navbar-expand-sm navbar-light bg-light">
-        <a class="navbar-brand" href="#">
+        <Link className="navbar-brand" to="/">
           Vidly
-        </a>
+        </Link>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            {items.map(item => (
-              <li class="nav-item active">
-                <a class="nav-link" href={item.path}>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav">
+            {items.map((item, index) => (
+              <li key={index} className="nav-item">
+                <NavLink className="nav-link" to={item.path}>
                   {item.title}
-                </a>
+                </NavLink>
               </li>
             ))}
           </ul>
