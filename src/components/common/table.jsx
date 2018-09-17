@@ -14,5 +14,5 @@ const Table = props => {
 };
 Table.defaultProps = {
   styleClass: "table"
-}
+};
 export default Table;

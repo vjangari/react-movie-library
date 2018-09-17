@@ -1,16 +1,23 @@
+import _ from "lodash";
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+
 import Like from "./common/like";
+import ListGroup from "./common/list-group";
 import Pagination from "./common/pagination";
 import Table from "./common/table";
-import { getMovies } from "../services/fakeMovieService";
+
 import { paginate } from "./util/pagination";
-import _ from "lodash";
+import { getMovies } from "../services/fakeMovieService";
 import { getGenres } from "./../services/fakeGenreService";
-import ListGroup from "./common/list-group";
 
 class Movies extends Component {
   columns = [
-    { path: "title", label: "Title" },
+    {
+      path: "title",
+      label: "Title",
+      content: movie => <Link to={"/movies/" + movie._id}>{movie.title}</Link>
+    },
     { path: "genre.name", label: "Genre" },
     { path: "numberInStock", label: "Stock" },
     { path: "dailyRentalRate", label: "Rate" },
